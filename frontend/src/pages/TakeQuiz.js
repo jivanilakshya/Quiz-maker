@@ -125,5 +125,100 @@ const TakeQuiz = () => {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  
+  return (
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            {quiz.title}
+          </Typography>
+          <Typography color="text.secondary" gutterBottom>
+            {quiz.description}
+          </Typography>
+          {timeLeft !== null && (
+            <Typography variant="h6" color="primary">
+              Time Left: {formatTime(timeLeft)}
+            </Typography>
+          )}
+        </Box>
+
+        <LinearProgress
+          variant="determinate"
+          value={(currentQuestion + 1) / quiz.questions.length * 100}
+          sx={{ mb: 4 }}
+        />
+
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Question {currentQuestion + 1} of {quiz.questions.length}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            {quiz.questions[currentQuestion].question}
+          </Typography>
+
+          <FormControl component="fieldset" sx={{ mt: 2 }}>
+            <RadioGroup
+              value={answers[currentQuestion]?.toString() || ''}
+              onChange={(e) => handleAnswerChange(e.target.value)}
+            >
+              {quiz.questions[currentQuestion].options.map((option, index) => (
+                <FormControlLabel
+                  key={index}
+                  value={index.toString()}
+                  control={<Radio />}
+                  label={option}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
+        </Box>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button
+            variant="outlined"
+            onClick={handlePrevious}
+            disabled={currentQuestion === 0}
+          >
+            Previous
+          </Button>
+          {currentQuestion < quiz.questions.length - 1 ? (
+            <Button
+              variant="contained"
+              onClick={handleNext}
+            >
+              Next
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setConfirmSubmit(true)}
+            >
+              Submit Quiz
+            </Button>
+          )}
+        </Box>
+      </Paper>
+
+      <Dialog
+        open={confirmSubmit}
+        onClose={() => setConfirmSubmit(false)}
+      >
+        <DialogTitle>Confirm Submission</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to submit your answers? You cannot change them after submission.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmSubmit(false)}>Cancel</Button>
+          <Button onClick={handleSubmit} color="primary" variant="contained">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
+  );
+};
+
 export default TakeQuiz; 
