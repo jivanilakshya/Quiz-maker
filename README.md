@@ -15,7 +15,7 @@
 
 ## Demo
 
-*([Demo video](https://github.com/jivanilakshya/Quiz-maker))*
+*([Demo video](https://drive.google.com/file/d/1BppbaDfEEBNfATIazO8S3ifHBDPK2Uck/view?usp=drive_link))*
 
 ---
 
